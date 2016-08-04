@@ -563,11 +563,15 @@ function! s:ApplyConfig(config) " {{{1
     endif
 
     " highlight the columns following max_line_length
+    let l:max_line_wrap = "true"
+    if has_key(a:config, "max_line_wrap")
+        let l:max_line_wrap = a:config['max_line_wrap']
+    endif
     if has_key(a:config, 'max_line_length') &&
                 \ a:config['max_line_length'] != 'off'
         let l:max_line_length = str2nr(a:config['max_line_length'])
 
-        if l:max_line_length >= 0
+        if l:max_line_length >= 0 && l:max_line_wrap == "true"
             let &l:textwidth = l:max_line_length
             if g:EditorConfig_preserve_formatoptions == 0
                 setlocal formatoptions+=tc
