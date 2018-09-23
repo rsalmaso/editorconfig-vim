@@ -625,7 +625,12 @@ function! s:ApplyConfig(config) " {{{1
                 \ a:config['max_line_length'] != 'off'
         let l:max_line_length = str2nr(a:config['max_line_length'])
 
-        if l:max_line_length >= 0
+        let l:max_line_wrap = "true"
+        if s:IsRuleActive('max_line_wrap', a:config)
+            let l:max_line_wrap = a:config['max_line_wrap']
+        endif
+
+        if l:max_line_length >= 0 && l:max_line_wrap == "true"
             let &l:textwidth = l:max_line_length
             if g:EditorConfig_preserve_formatoptions == 0
                 setlocal formatoptions+=tc
